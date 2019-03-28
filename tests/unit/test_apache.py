@@ -291,4 +291,3 @@ def test_update_config_v24_large_IP_set(
         msg = 'Test failed, not removing test directory '
         msg += '"%s" to aid debugging ' % utils.get_test_tmpdir()
         assert False, msg
-

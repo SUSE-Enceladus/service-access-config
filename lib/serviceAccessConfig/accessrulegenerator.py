@@ -116,7 +116,7 @@ class ServiceAccessGenerator(object):
                             )
                             logging.error(response.text)
                             logging.error('=' * 20)
-                    except:
+                    except Exception:
                         logging.error('=' * 20)
                         logging.error('No response from server')
             else:
@@ -134,7 +134,7 @@ class ServiceAccessGenerator(object):
         ip_source_config = ConfigParser.RawConfigParser()
         try:
             parsed = ip_source_config.read(self.ip_source_config_file_name)
-        except:
+        except Exception:
             error_msg = 'Could not parse configured source ip '
             error_msg += 'config file %s' % self.ip_source_config_file_name
             logging.error(error_msg)
