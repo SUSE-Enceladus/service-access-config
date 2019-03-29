@@ -64,22 +64,14 @@ def get_access_rule_generators(access_generator_config):
                     globals(), locals(),
                     fromlist=[class_name]
                 )
-                exec(
-                    'generator = module.%s("%s")' % (
-                        class_name,
-                        ip_source_config_file_name
-                    ),
-                    globals(),
-                    locals()
-                )
+                generator = getattr(
+                    module, class_name)(ip_source_config_file_name)
                 try:
-                    locals()['generator'].set_config_values(
-                        access_generator_config
-                    )
+                    generator.set_config_values(access_generator_config)
                 except ServiceAccessGeneratorConfigError as e:
                     logging.error(e.message)
                     continue
-                generators.append(locals()['generator'])
+                generators.append(generator)
                 break
         else:
             error_msg = 'Configuration for plugin "%s" found, ' % plugin_name

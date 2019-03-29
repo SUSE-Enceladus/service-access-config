@@ -25,8 +25,6 @@ install:
 	gzip "$(DESTDIR)"/"$(MANDIR)"/man1/serviceAccessConfig.1
 
 pep8:
-	@python -m pycodestyle lib/serviceAccessConfig/*.py
-	@python -m pycodestyle --ignore=E402 tests/unit/*.py
 	@flake8 lib/serviceAccessConfig/*.py
 	@flake8 --ignore=E402 tests/unit/*.py
 	@flake8 setup.py
