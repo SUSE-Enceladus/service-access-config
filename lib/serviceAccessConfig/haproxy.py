@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -19,11 +19,9 @@
 
 """serviceAccessConfig plugin for HAProxy"""
 
-import ConfigParser
 import logging
 
-from accessrulegenerator import ServiceAccessGenerator
-from generatorexceptions import *
+from serviceAccessConfig.accessrulegenerator import ServiceAccessGenerator
 
 
 class ServiceAccessGeneratorHaproxy(ServiceAccessGenerator):
@@ -82,7 +80,7 @@ class ServiceAccessGeneratorHaproxy(ServiceAccessGenerator):
             if cidr_block_count == 35:
                 acl_network_names.append(self._generate_network_name(
                     acl_name_prefix,
-                    counter)
+                    acl_count)
                 )
                 acl_section += self._generate_acl_entry(
                     acl_name_prefix,

@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -17,9 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ConfigParser
 import pytest
-import os
 import sys
 
 from mock import patch
@@ -30,7 +28,9 @@ import unittest_utils as utils
 sys.path.insert(0, utils.get_code_path())
 
 from serviceAccessConfig.accessrulegenerator import ServiceAccessGenerator
-from serviceAccessConfig.generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorConfigError, \
+    ServiceAccessGeneratorServiceRestartError
 
 
 # ======================================================================
@@ -55,7 +55,7 @@ def test_allowed_client_ip_addrs_error_config(mock_logging):
         '%s/ip_data_syntax_error.cfg' % utils.get_data_path()
     )
     with pytest.raises(ServiceAccessGeneratorConfigError) as excinfo:
-        cidr_blocks = gen._get_allowed_client_ip_addrs()
+        gen._get_allowed_client_ip_addrs()
 
     assert mock_logging.error.called
     assert 'tests/data/ip_data_syntax_error.cfg' in str(excinfo.value)
@@ -69,7 +69,7 @@ def test_allowed_client_ip_addrs_no_config(mock_logging):
 
     gen = ServiceAccessGenerator('%s/foo.cfg' % utils.get_data_path())
     with pytest.raises(ServiceAccessGeneratorConfigError) as excinfo:
-        cidr_blocks = gen._get_allowed_client_ip_addrs()
+        gen._get_allowed_client_ip_addrs()
 
     assert mock_logging.error.called
     assert 'tests/data/foo.cfg' in str(excinfo.value)
@@ -91,7 +91,7 @@ def test_restart_service_systemd(
 
     gen = ServiceAccessGenerator('%s/ip_data.cfg' % utils.get_data_path())
     gen.service_name = 'foo'
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen._restart_service()
 
     assert mock_logging.error.called
@@ -115,7 +115,7 @@ def test_restart_service_sysvinit(
 
     gen = ServiceAccessGenerator('%s/ip_data.cfg' % utils.get_data_path())
     gen.service_name = 'foo'
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen._restart_service()
 
     assert mock_logging.error.called
@@ -148,7 +148,7 @@ def test_set_config_values_no_interval(mock_logging):
     )
     gen = ServiceAccessGenerator('%s/ip_data.cfg' % utils.get_data_path())
     with pytest.raises(ServiceAccessGeneratorConfigError) as excinfo:
-        result = gen.set_config_values(config, 'example')
+        gen.set_config_values(config, 'example')
 
     expected_msg = 'Configuration error. An update interval '
     expected_msg += 'must be specified with the "updateInterval" option '
@@ -168,7 +168,7 @@ def test_set_config_values_no_service_config(mock_logging):
     )
     gen = ServiceAccessGenerator('%s/ip_data.cfg' % utils.get_data_path())
     with pytest.raises(ServiceAccessGeneratorConfigError) as excinfo:
-        result = gen.set_config_values(config, 'example')
+        gen.set_config_values(config, 'example')
 
     expected_msg = 'Configuration error. A configuration file to modify '
     expected_msg += 'must be specified with the "serviceConfig" option in the '

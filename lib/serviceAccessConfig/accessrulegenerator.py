@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -19,7 +19,7 @@
 
 """Base class for all serviceAccessConfig plugins"""
 
-import ConfigParser
+import configparser
 import hashlib
 import logging
 import os
@@ -27,7 +27,9 @@ import requests
 import sys
 import threading
 
-from generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorConfigError, \
+    ServiceAccessGeneratorServiceRestartError
 
 
 class ServiceAccessGenerator(object):
@@ -93,10 +95,10 @@ class ServiceAccessGenerator(object):
 
     # ======================================================================
     def update_config(self):
-        """Update the Apache configuration file"""
+        """Update the configured configuration file"""
         ctx = open(self.ip_source_config_file_name, 'r').read()
         sha1 = hashlib.sha1()
-        sha1.update(ctx)
+        sha1.update(ctx.encode())
         if (
                 not self.ip_source_config_file_sha1 or
                 self.ip_source_config_file_sha1 != sha1.digest()
@@ -131,7 +133,7 @@ class ServiceAccessGenerator(object):
            collect them in a comma separated string."""
         cidr_blocks = ''
 
-        ip_source_config = ConfigParser.RawConfigParser()
+        ip_source_config = configparser.RawConfigParser()
         try:
             parsed = ip_source_config.read(self.ip_source_config_file_name)
         except Exception:

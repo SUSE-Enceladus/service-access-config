@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -17,11 +17,8 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ConfigParser
 import pytest
 import sys
-
-from mock import patch
 
 # Our test utilities
 import unittest_utils as utils
@@ -29,7 +26,8 @@ import unittest_utils as utils
 sys.path.insert(0, utils.get_code_path())
 
 from serviceAccessConfig.haproxy import ServiceAccessGeneratorHaproxy
-from serviceAccessConfig.generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorServiceRestartError
 
 
 # ======================================================================
@@ -74,7 +72,7 @@ def test_update_config():
         '%s/ip_data.cfg' % utils.get_data_path()
     )
     gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen.update_config()
 
     # Load the reference result data

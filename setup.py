@@ -28,19 +28,21 @@ except ImportError:
     sys.stderr.write('Python setuptools required, please install.')
     sys.exit(1)
 
-exec open('lib/serviceAccessConfig/version.py').read()
+version = open('lib/serviceAccessConfig/VERSION').read().strip()
 
 if __name__ == '__main__':
     setuptools.setup(
         name='serviceAccessConfig',
         description=(
-            'Automatic generation of access control directives'),
-         url='https://github.com/SUSE/Enceladus',
+            'Automatic generation of access control directives'
+        ),
+        url='https://github.com/SUSE/Enceladus',
         license='GPL-3.0+',
-        author='Robert Schweikert',
-        author_email='rjschwei@suse.com',
+        author='SUSE Public Cloud Team',
+        author_email='public-cloud-dev@susecloud.net',
         version=version,
         packages=setuptools.find_packages('lib'),
+        package_data={'serviceAccessConfig': ['VERSION']},
         package_dir={
             '': 'lib',
         },

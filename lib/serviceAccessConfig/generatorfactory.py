@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -19,13 +19,13 @@
 
 """Factory for access rules generators"""
 
-import ConfigParser
 import glob
 import inspect
 import logging
 import os
 
-from generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorConfigError
 
 module_path = os.path.abspath(
     os.path.dirname(inspect.getfile(inspect.currentframe())))
@@ -64,10 +64,8 @@ def get_access_rule_generators(access_generator_config):
                     globals(), locals(),
                     fromlist=[class_name]
                 )
-                exec 'generator = module.%s("%s")' % (
-                    class_name,
-                    ip_source_config_file_name
-                )
+                generator = getattr(
+                    module, class_name)(ip_source_config_file_name)
                 try:
                     generator.set_config_values(access_generator_config)
                 except ServiceAccessGeneratorConfigError as e:

@@ -6,7 +6,7 @@ files = LICENSE Makefile README.md setup.py
 
 nv = $(shell rpm -q --specfile --qf '%{NAME}-%{VERSION}|' *.spec | cut -d'|' -f1)
 verSpec = $(shell rpm -q --specfile --qf '%{VERSION}|' *.spec | cut -d'|' -f1)
-verSrc = $(shell python -c 'exec open("lib/serviceAccessConfig/version.py").read(); print version')
+verSrc = $(shell cat lib/serviceAccessConfig/VERSION)
 
 ifneq "$(verSpec)" "$(verSrc)"
 $(error "Version mismatch, will not take any action")
@@ -25,8 +25,9 @@ install:
 	gzip "$(DESTDIR)"/"$(MANDIR)"/man1/serviceAccessConfig.1
 
 pep8:
-	@python -m pycodestyle lib/serviceAccessConfig/*.py
-	@python -m pycodestyle --ignore=E402 tests/unit/*.py 
+	@flake8 lib/serviceAccessConfig/*.py
+	@flake8 --ignore=E402 tests/unit/*.py
+	@flake8 setup.py
 
 test:
 	py.test tests/unit/test_*.py
