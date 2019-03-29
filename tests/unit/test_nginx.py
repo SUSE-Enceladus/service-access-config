@@ -46,99 +46,13 @@ def test_update_config_no_file():
 
     # Load the reference result data
     ref_result_file = (
-        '%s/nginx-no-exist.cfg' % utils.get_reference_result_path()
+        '%s/nginx-access.cfg' % utils.get_reference_result_path()
     )
     ref_result = open(ref_result_file).read()
 
     # Load the generated result
     gen_result_file = (
         '%s/nginx-access.cfg' % utils.get_test_tmpdir()
-    )
-    gen_result = open(gen_result_file).read()
-
-    if ref_result == gen_result:
-        # success
-        utils.remove_test_tmpdir()
-    else:
-        msg = 'Test failed, not removing test directory '
-        msg += '"%s" to aid debugging ' % utils.get_test_tmpdir()
-        assert False, msg
-
-
-# ======================================================================
-def test_update_config_with_data():
-    """Test the generation if the ACL config file if a ACL config file exists
-       and has unrelated data"""
-
-    utils.create_test_tmpdir()
-    utils.copy_to_testdir('%s/nginx_setup_w_data.cfg' % utils.get_data_path())
-    config = utils.get_config(
-        '%s/nginx_setup_w_data.cfg' % utils.get_data_path()
-    )
-    utils.copy_to_testdir(
-        '%s/nginx-access-pre-data.cfg' % utils.get_data_path()
-    )
-
-    gen = ServiceAccessGeneratorNginx(
-        '%s/ip_data.cfg' % utils.get_data_path()
-    )
-    gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
-        gen.update_config()
-
-    # Load the reference result data
-    ref_result_file = (
-        '%s/nginx-pre-data.cfg' % utils.get_reference_result_path()
-    )
-    ref_result = open(ref_result_file).read()
-
-    # Load the generated result
-    gen_result_file = (
-        '%s/nginx-access-pre-data.cfg' % utils.get_test_tmpdir()
-    )
-    gen_result = open(gen_result_file).read()
-
-    if ref_result == gen_result:
-        # success
-        utils.remove_test_tmpdir()
-    else:
-        msg = 'Test failed, not removing test directory '
-        msg += '"%s" to aid debugging ' % utils.get_test_tmpdir()
-        assert False, msg
-
-
-# ======================================================================
-def test_update_config_with_data_and_acl():
-    """Test the generation if the ACL config file if a ACL config file exists
-       and has unrelated data"""
-
-    utils.create_test_tmpdir()
-    utils.copy_to_testdir(
-        '%s/nginx_setup_w_data_acl.cfg' % utils.get_data_path()
-    )
-    config = utils.get_config(
-        '%s/nginx_setup_w_data_acl.cfg' % utils.get_data_path()
-    )
-    utils.copy_to_testdir(
-        '%s/nginx-access-pre-data-acl.cfg' % utils.get_data_path()
-    )
-
-    gen = ServiceAccessGeneratorNginx(
-        '%s/ip_data.cfg' % utils.get_data_path()
-    )
-    gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
-        gen.update_config()
-
-    # Load the reference result data
-    ref_result_file = (
-        '%s/nginx-pre-data.cfg' % utils.get_reference_result_path()
-    )
-    ref_result = open(ref_result_file).read()
-
-    # Load the generated result
-    gen_result_file = (
-        '%s/nginx-access-pre-data-acl.cfg' % utils.get_test_tmpdir()
     )
     gen_result = open(gen_result_file).read()
 
