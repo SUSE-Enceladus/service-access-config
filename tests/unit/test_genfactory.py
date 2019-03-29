@@ -27,8 +27,9 @@ import unittest_utils as utils
 
 sys.path.insert(0, utils.get_code_path())
 
-from serviceAccessConfig.generatorfactory import *
-from serviceAccessConfig.generatorexceptions import *
+from serviceAccessConfig.generatorfactory import get_access_rule_generators
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorConfigError
 
 
 # ======================================================================
@@ -66,8 +67,8 @@ def test_factory_missing_plugin(mock_logging):
     config = utils.get_config(
         '%s/missing_ipdata_opt.cfg' % utils.get_data_path()
     )
-    with pytest.raises(ServiceAccessGeneratorConfigError) as excinfo:
-        generators = get_access_rule_generators(config)
+    with pytest.raises(ServiceAccessGeneratorConfigError):
+        get_access_rule_generators(config)
 
     assert mock_logging.error.called
 
@@ -81,7 +82,7 @@ def test_factory_missing_option(mock_logging):
     config = utils.get_config(
         '%s/no_service_plugin.cfg' % utils.get_data_path()
     )
-    generators = get_access_rule_generators(config)
+    get_access_rule_generators(config)
 
     assert mock_logging.error.called
 

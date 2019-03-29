@@ -20,15 +20,14 @@
 import pytest
 import sys
 
-from mock import patch
-
 # Our test utilities
 import unittest_utils as utils
 
 sys.path.insert(0, utils.get_code_path())
 
 from serviceAccessConfig.haproxy import ServiceAccessGeneratorHaproxy
-from serviceAccessConfig.generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorServiceRestartError
 
 
 # ======================================================================
@@ -73,7 +72,7 @@ def test_update_config():
         '%s/ip_data.cfg' % utils.get_data_path()
     )
     gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen.update_config()
 
     # Load the reference result data

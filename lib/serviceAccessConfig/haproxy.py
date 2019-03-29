@@ -80,7 +80,7 @@ class ServiceAccessGeneratorHaproxy(ServiceAccessGenerator):
             if cidr_block_count == 35:
                 acl_network_names.append(self._generate_network_name(
                     acl_name_prefix,
-                    counter)
+                    acl_count)
                 )
                 acl_section += self._generate_acl_entry(
                     acl_name_prefix,
