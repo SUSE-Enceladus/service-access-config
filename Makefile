@@ -25,8 +25,8 @@ install:
 	gzip "$(DESTDIR)"/"$(MANDIR)"/man1/serviceAccessConfig.1
 
 pep8:
-	@pep8 -v --statistics lib/serviceAccessConfig/*.py
-	@pep8 -v --statistics --ignore=E402 tests/unit/*.py
+	@python -m pycodestyle lib/serviceAccessConfig/*.py
+	@python -m pycodestyle --ignore=E402 tests/unit/*.py 
 
 test:
 	py.test tests/unit/test_*.py

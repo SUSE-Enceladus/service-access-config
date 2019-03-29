@@ -80,7 +80,7 @@ to generate the the access rules appropriate for the service being managed.
 
 Any submissions need to be accompanied by a test.
 
-Code needs to be pep8 clean
+Code needs to be pycodestyle clean
 
 ### Implementing plugins
 
