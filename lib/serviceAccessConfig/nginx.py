@@ -21,7 +21,7 @@
 
 import logging
 
-from accessrulegenerator import ServiceAccessGenerator
+from serviceAccessConfig.accessrulegenerator import ServiceAccessGenerator
 
 
 class ServiceAccessGeneratorNginx(ServiceAccessGenerator):

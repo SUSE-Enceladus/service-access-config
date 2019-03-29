@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -38,7 +38,7 @@ Options:
         The log file to be written
 """
 
-import ConfigParser
+import configparser
 import logging
 import sys
 
@@ -52,7 +52,7 @@ command_args = docopt(__doc__, version=version)
 default_config_file = '/etc/serviceaccess/srvAccess.cfg'
 config_file_name = command_args.get('--config') or default_config_file
 
-generator_config = ConfigParser.RawConfigParser()
+generator_config = configparser.RawConfigParser()
 try:
     parsed = generator_config.read(config_file_name)
 except:
@@ -103,6 +103,3 @@ if command_args.get('--ipdata'):
 generators = get_access_rule_generators(generator_config)
 for generator in generators:
     generator.update_config()
-
-
-

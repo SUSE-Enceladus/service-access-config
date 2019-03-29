@@ -1,4 +1,4 @@
-#  Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+#  Copyright (C) 2019 SUSE LLC
 #  All rights reserved.
 #
 #  This file is part of serviceAccessConfig
@@ -19,14 +19,12 @@
 
 """serviceAccessConfig plugin for Apache"""
 
-import ConfigParser
 import glob
 import logging
 import os
 import re
 
-from accessrulegenerator import ServiceAccessGenerator
-from generatorexceptions import *
+from serviceAccessConfig.accessrulegenerator import ServiceAccessGenerator
 
 apache_directory_directive = re.compile(r'\s*<Directory .*>')
 
