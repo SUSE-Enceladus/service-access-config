@@ -19,11 +19,9 @@
 
 """serviceAccessConfig plugin for nginx"""
 
-import ConfigParser
 import logging
 
 from accessrulegenerator import ServiceAccessGenerator
-from generatorexceptions import *
 
 
 class ServiceAccessGeneratorNginx(ServiceAccessGenerator):

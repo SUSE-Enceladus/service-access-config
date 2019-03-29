@@ -17,11 +17,8 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ConfigParser
 import pytest
 import sys
-
-from mock import patch
 
 # Our test utilities
 import unittest_utils as utils
@@ -29,7 +26,8 @@ import unittest_utils as utils
 sys.path.insert(0, utils.get_code_path())
 
 from serviceAccessConfig.nginx import ServiceAccessGeneratorNginx
-from serviceAccessConfig.generatorexceptions import *
+from serviceAccessConfig.generatorexceptions import \
+    ServiceAccessGeneratorServiceRestartError
 
 
 # ======================================================================
@@ -43,7 +41,7 @@ def test_update_config_no_file():
         '%s/ip_data.cfg' % utils.get_data_path()
     )
     gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen.update_config()
 
     # Load the reference result data
@@ -85,7 +83,7 @@ def test_update_config_with_data():
         '%s/ip_data.cfg' % utils.get_data_path()
     )
     gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen.update_config()
 
     # Load the reference result data
@@ -129,7 +127,7 @@ def test_update_config_with_data_and_acl():
         '%s/ip_data.cfg' % utils.get_data_path()
     )
     gen.set_config_values(config)
-    with pytest.raises(ServiceAccessGeneratorServiceRestartError) as excinfo:
+    with pytest.raises(ServiceAccessGeneratorServiceRestartError):
         gen.update_config()
 
     # Load the reference result data
