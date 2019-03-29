@@ -1,7 +1,7 @@
 #
 # spec file for package python-serviceAccessConfig.spec
 #
-# Copyright (c) 2016 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,8 +16,8 @@
 #
 
 
-Name:           python-serviceAccessConfig
-Version:        0.5.2
+Name:           python3-serviceAccessConfig
+Version:        0.6.0
 Release:        0
 Summary:        Generate access controll
 License:        GPL-3.0+
@@ -28,39 +28,31 @@ Source0:        serviceAccessConfig-%{version}.tar.bz2
 # it was distributed to CSPs and deployed to SUSE operated infrastructure
 # servers
 Conflicts:      cspInfraServerAccessConfig
-%if 0%{?suse_version} > 1140
-BuildRequires: systemd
-%endif
 %{?systemd_requires}
-%if 0%{?suse_version} < 1140
-Requires:      insserv
-Requires:      sysvinit
-%endif
-Requires:       python-base
-Requires:       python-docopt
-Requires:       python-requests
-BuildRequires:  python-mock
-BuildRequires:  python-pytest
-BuildRequires:  python-requests
-BuildRequires:  python-setuptools
+Requires:       python3-base
+Requires:       python3-docopt
+Requires:       python3-requests
+BuildRequires:  python3-mock
+BuildRequires:  python3-pytest
+BuildRequires:  python3-requests
+BuildRequires:  python3-setuptools
+BuildRequires: systemd
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-
-%if 0%{?suse_version} && 0%{?suse_version} <= 1110
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%else
 BuildArch:      noarch
-%endif
+
+Provides:       python-serviceAccessConfig = %{version}
+Obsoletes:      python-serviceAccessConfig < %{version}
 
 %description
 Automatically generate access control configuration for configured services.
-Supported services are Apache and HAProxy.
+Supported services are Apache, HAProxy, and Nginx.
 
 %package test
 Summary:        Tests for python-serviceAccessConfig
 Group:          Development/Libraries/Python
-PreReq:         python-serviceAccessConfig = %version
-Requires:       python-mock
-Requires:       python-pytest
+PreReq:         python3-serviceAccessConfig = %version
+Requires:       python3-mock
+Requires:       python3-pytest
 
 %description test
 Package provides the unit tests for python-serviceAccessConfig
@@ -69,11 +61,11 @@ Package provides the unit tests for python-serviceAccessConfig
 %setup -q -n serviceAccessConfig-%{version}
 
 %build
-python setup.py build
+python3 setup.py build
 
 %install
 # Code
-python setup.py install --prefix=%{_prefix} --root=%{buildroot}
+python3 setup.py install --prefix=%{_prefix} --root=%{buildroot}
 mkdir -p %{buildroot}%{_sbindir}
 mv %{buildroot}%{_bindir}/* %{buildroot}%{_sbindir}
 # Man page
@@ -83,55 +75,32 @@ gzip %{buildroot}/%{_mandir}/man1/serviceAccessConfig.1
 # Tests
 mkdir -p %{buildroot}%{python_sitelib}/tests/serviceAccessConfig
 cp -r tests/* %{buildroot}%{python_sitelib}/tests/serviceAccessConfig
-# Init system
-%if 0%{?suse_version} < 1140
-mkdir -p %{buildroot}%{_sysconfdir}
-cp -r etc/init.d %{buildroot}%{_sysconfdir}
-%else
 mkdir -p %{buildroot}/%{_unitdir}
 cp -r usr/lib/systemd/system/* %{buildroot}/%{_unitdir}
-%endif
 
 %check
 py.test tests/unit/test_*.py
 
 %pre
-%if 0%{?suse_version} > 1140
     %service_add_pre serviceAccessConfig.service
-%endif
 
 %post
-%if 0%{?suse_version} > 1140
     %service_add_post serviceAccessConfig.service
-%endif
 
 %preun
-%if 0%{?suse_version} > 1140
     %service_del_preun serviceAccessConfig.service
-%else
-    %stop_on_removal
-%endif
 
 %postun
-%if 0%{?suse_version} > 1140
     %service_del_postun serviceAccessConfig.service
-%else
-    %insserv_cleanup
-%endif
-
 
 %files
 %defattr(-,root,root,-)
 %doc LICENSE README.md
 %exclude %{python_sitelib}/tests/*
 %{_mandir}/man*/*
-%{python_sitelib}/*
+%{python3_sitelib}/*
 %{_sbindir}/*
-%if 0%{?suse_version} > 1140
 %{_unitdir}/serviceAccessConfig.service
-%else
-%attr(0755,root,root) %{_initddir}/serviceAccessConfig
-%endif
 
 %files test
 %defattr(-,root,root,-)
