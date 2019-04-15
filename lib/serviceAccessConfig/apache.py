@@ -170,9 +170,8 @@ class ServiceAccessGeneratorApache(ServiceAccessGenerator):
                     new_content += ln
 
             # Write the updated config
-            fout = open(cfg, 'w')
-            fout.write(new_content)
-            fout.close()
+            with open(cfg, 'w') as fout:
+                fout.write(new_content)
             logging.info('Updated Apache config file %s' % cfg)
 
         return 1

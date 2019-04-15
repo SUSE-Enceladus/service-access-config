@@ -36,7 +36,7 @@ BuildRequires:  python3-mock
 BuildRequires:  python3-pytest
 BuildRequires:  python3-requests
 BuildRequires:  python3-setuptools
-BuildRequires: systemd
+BuildRequires:  systemd
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -95,7 +95,8 @@ py.test tests/unit/test_*.py
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README.md
+%doc README.md
+%license LICENSE 
 %exclude %{python_sitelib}/tests/*
 %{_mandir}/man*/*
 %{python3_sitelib}/*
