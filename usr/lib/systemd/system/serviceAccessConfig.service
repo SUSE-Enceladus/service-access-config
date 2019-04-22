@@ -2,6 +2,7 @@
 Description=Configuration update service for servers, configure "After" as needed
 After=apache2.service
 After=haproxy.service
+After=nginx.service
 
 [Service]
 ExecStart=/usr/sbin/serviceAccessConfig
