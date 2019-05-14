@@ -45,8 +45,8 @@ import sys
 from docopt import docopt
 
 from serviceAccessConfig.generatorfactory import get_access_rule_generators
-from serviceAccessConfig.version import version
 
+version = open('lib/serviceAccessConfig/VERSION').read().strip()
 command_args = docopt(__doc__, version=version)
 
 default_config_file = '/etc/serviceaccess/srvAccess.cfg'
