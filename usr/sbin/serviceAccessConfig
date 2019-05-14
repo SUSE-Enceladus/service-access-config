@@ -40,13 +40,15 @@ Options:
 
 import configparser
 import logging
+import os
+import serviceAccessConfig.generatorfactory as factory
 import sys
 
 from docopt import docopt
 
-from serviceAccessConfig.generatorfactory import get_access_rule_generators
+version_file = os.path.dirname(factory.__file__) + '/VERSION'
+version = open(version_file).read().strip()
 
-version = open('lib/serviceAccessConfig/VERSION').read().strip()
 command_args = docopt(__doc__, version=version)
 
 default_config_file = '/etc/serviceaccess/srvAccess.cfg'
@@ -100,6 +102,6 @@ if command_args.get('--ipdata'):
         command_args.get('--ipdata')
     )
 
-generators = get_access_rule_generators(generator_config)
+generators = factory.get_access_rule_generators(generator_config)
 for generator in generators:
     generator.update_config()
