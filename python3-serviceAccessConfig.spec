@@ -17,7 +17,7 @@
 
 
 Name:           python3-serviceAccessConfig
-Version:        0.6.0
+Version:        0.6.1
 Release:        0
 Summary:        Generate access controll
 License:        GPL-3.0+
@@ -96,7 +96,7 @@ py.test tests/unit/test_*.py
 %files
 %defattr(-,root,root,-)
 %doc README.md
-%license LICENSE 
+%license LICENSE
 %exclude %{python_sitelib}/tests/*
 %{_mandir}/man*/*
 %{python3_sitelib}/*
