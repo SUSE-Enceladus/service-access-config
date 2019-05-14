@@ -72,6 +72,9 @@ mv %{buildroot}%{_bindir}/* %{buildroot}%{_sbindir}
 install -d -m 755 %{buildroot}/%{_mandir}/man1
 install -m 644 man/man1/serviceAccessConfig.1 %{buildroot}/%{_mandir}/man1
 gzip %{buildroot}/%{_mandir}/man1/serviceAccessConfig.1
+# Sample config
+install -d -m 755 %{buildroot}%{_sysconfdir}/serviceaccess
+install -m 644 etc/serviceaccess/srvAccess.cfg %{buildroot}%{_sysconfdir}/serviceaccess/srvAccess.cfg.example
 # Tests
 mkdir -p %{buildroot}%{python_sitelib}/tests/serviceAccessConfig
 cp -r tests/* %{buildroot}%{python_sitelib}/tests/serviceAccessConfig
@@ -102,6 +105,8 @@ py.test tests/unit/test_*.py
 %{python3_sitelib}/*
 %{_sbindir}/*
 %{_unitdir}/serviceAccessConfig.service
+%dir %{_sysconfdir}/serviceaccess
+%config %{_sysconfdir}/serviceaccess/srvAccess.cfg.example
 
 %files test
 %defattr(-,root,root,-)
