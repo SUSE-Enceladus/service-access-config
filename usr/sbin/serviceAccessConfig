@@ -41,8 +41,9 @@ Options:
 import configparser
 import logging
 import os
-import serviceAccessConfig.generatorfactory as factory
 import sys
+
+import serviceAccessConfig.generatorfactory as factory
 
 from docopt import docopt
 
