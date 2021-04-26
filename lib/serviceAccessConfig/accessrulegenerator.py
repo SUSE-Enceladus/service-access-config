@@ -151,12 +151,17 @@ class ServiceAccessGenerator(object):
             raise ServiceAccessGeneratorConfigError(error_msg)
 
         config_sections = ip_source_config.sections()
+        cidr_blocks = []
+        # add IPv4 ranges
         for section in config_sections:
-            public_ips = ip_source_config.get(section, 'public-ips')
-            cidr_blocks += public_ips
-            cidr_blocks += ','
-
-        cidr_blocks = cidr_blocks[:-1]  # remove trainling ,
+            subnets = ip_source_config.get(section, 'public-ips')
+            cidr_blocks.append(subnets)
+        # add IPv6 ranges
+        for section in config_sections:
+            subnets = ip_source_config.get(section, 'public-ipsv6', fallback=False)
+            if subnets:
+                cidr_blocks.append(subnets)
+        cidr_blocks = ','.join(cidr_blocks)
 
         return cidr_blocks
 
