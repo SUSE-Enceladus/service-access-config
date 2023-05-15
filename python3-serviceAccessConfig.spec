@@ -28,7 +28,11 @@ Source0:        serviceAccessConfig-%{version}.tar.bz2
 # it was distributed to CSPs and deployed to SUSE operated infrastructure
 # servers
 Conflicts:      cspInfraServerAccessConfig
+if 0%{?suse_version} == 1315
 %{?systemd_requires}
+%else
+%{?systemd_ordering}
+%endif
 Requires:       python3-base
 Requires:       python3-docopt
 Requires:       python3-requests
@@ -37,6 +41,7 @@ BuildRequires:  python3-pytest
 BuildRequires:  python3-requests
 BuildRequires:  python3-setuptools
 BuildRequires:  systemd
+BuildRequires:  systemd-rpm-macros
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
